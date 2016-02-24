@@ -1,5 +1,6 @@
 {
-  "name": "swagger-ui",
+  "name": "swagger-ui-mscc",
+  "version": "0.0.1",
   "main": "dist/index.html",
   "authors": [
     "Mohsen Azimi <me@azimi.me>"

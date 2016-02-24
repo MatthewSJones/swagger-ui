@@ -3,5 +3,5 @@
   "analytics": false,
   "timeout": 120000,
   "color": true,
-  "registry": "https://bower.herokuapp.com"
+  "registry": "https://github.com/MatthewSJones/swagger-ui.git"
 }

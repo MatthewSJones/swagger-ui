@@ -1,6 +1,6 @@
 {
   "name": "swagger-ui-mscc",
-  "version": "0.0.1",
+  "version": "2.1.5",
   "main": "dist/index.html",
   "authors": [
     "Mohsen Azimi <me@azimi.me>"
@@ -15,7 +15,7 @@
   ],
   "license": "Copyright 2016 SmartBear Software",
   "homepage": "http://swagger.io",
-  "private": false,
+  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",

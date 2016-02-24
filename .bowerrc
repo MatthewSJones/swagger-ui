@@ -1,0 +1,7 @@
+{
+  "directory": "bower/",
+  "analytics": false,
+  "timeout": 120000,
+  "color": true,
+  "registry": "https://bower.herokuapp.com"
+}

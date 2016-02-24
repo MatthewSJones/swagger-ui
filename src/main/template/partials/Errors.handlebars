@@ -1,0 +1,72 @@
+﻿<div class="">
+    <div>
+        <p>All non 200 responses will be in the form of:</p>
+        <pre id="errors-code"><code>{<br />  "errors" :<br />  [<br />    "Status" : int <i> (http status code)</i>,<br />    "Code" : int <i> (Web service specific error for more details)</i>,<br />    "Details" : string <i>(Details about the error)</i>,<br />    "Link" : string <i> (Link for more information on the error)</i><br />  ]<br />  ,.....<br />}</code></pre>
+    </div>
+    <br />
+    <div>
+        HTTP status codes the service may return :
+    </div>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Text</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>200</th>
+                <td>OK</td>
+                <td>Success</td>
+            </tr>
+            <tr>
+                <th>304</th>
+                <td>Not Modified</td>
+                <td>There was no new data to return.</td>
+            </tr>
+            <tr>
+                <th>400</th>
+                <td>Bad Request</td>
+                <td>The request was invalid or cannot be fully processed</td>
+            </tr>
+            <tr>
+                <th>401</th>
+                <td>Unauthorized</td>
+                <td>The request needs proper credentials</td>
+            </tr>
+            <tr>
+                <th>403</th>
+                <td>Forbidden</td>
+                <td>Proper credentials were given, but the request is not allowed for the given credentials</td>
+            </tr>
+            <tr>
+                <th>404</th>
+                <td>Not Found</td>
+                <td>The URI requested is invalid or the resource requested does not exist</td>
+            </tr>
+            <tr>
+                <th>410</th>
+                <td>Gone</td>
+                <td>The endpoint no longer exists</td>
+            </tr>
+            <tr>
+                <th>422</th>
+                <td>Unprocessable Entity</td>
+                <td>The request can not be proccessed with the given parameters</td>
+            </tr>
+            <tr>
+                <th>500</th>
+                <td>Internal Server Error</td>
+                <td>Something unexpected went wrong.</td>
+            </tr>
+            <tr>
+                <th>503</th>
+                <td>Service Unavailable</td>
+                <td>The web service is currently down, Try again later.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

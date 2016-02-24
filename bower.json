@@ -14,12 +14,41 @@
   ],
   "license": "Copyright 2016 SmartBear Software",
   "homepage": "http://swagger.io",
-  "private": true,
+  "private": false,
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "jquery": "1.9.1",
+    "bootstrap": "3.3.6",
+    "underscore": "1.7.0",
+    "marked": "0.3.5",
+    "handlebars": "2.0.0",
+    "highlight": "7.3",
+    "jquery.bbq": "1.2.1",
+    "backbone": "1.1.2",
+    "js-yaml": "3.4.6",
+    "json-editor": "0.7.22"
+  },
+  "overrides": {
+    "handlebars": {
+      "main": "handlebars.runtime.min.js"
+    },
+    "highlight": {
+      "main": "src/highlight.js"
+    },
+    "jquery": {
+      "main": "jquery.min.js"
+    },
+    "jquery.bbq": {
+      "main": "jquery.ba-bbq.min.js"
+    },
+    "bootstrap": {
+      "main": "dist/js/bootstrap.min.js"
+    }
+  }
 }

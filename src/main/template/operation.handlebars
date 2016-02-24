@@ -81,7 +81,7 @@
           <thead>
             <tr>
             <th style="width: 100px; max-width: 100px" data-sw-translate>Parameter</th>
-            <th style="width: 310px; max-width: 310px" data-sw-translate>Value</th>
+            <th style="width: 300px; max-width: 310px" data-sw-translate>Value</th>
             <th style="width: 200px; max-width: 200px" data-sw-translate>Description</th>
             <th style="width: 100px; max-width: 100px" data-sw-translate>Parameter Type</th>
             <th style="width: 220px; max-width: 230px" data-sw-translate>Data Type</th>
@@ -95,13 +95,11 @@
           {{#if responseMessages}}
           <div style='margin:0;padding:0;display:inline'></div>
           <h4 data-sw-translate>Response Messages</h4>
-          <table class='fullwidth'>
+          <table class='table'>
             <thead>
             <tr>
               <th data-sw-translate>HTTP Status Code</th>
               <th data-sw-translate>Reason</th>
-              <th data-sw-translate>Response Model</th>
-              <th data-sw-translate>Headers</th>
             </tr>
             </thead>
             <tbody class="operation-status">
@@ -111,7 +109,7 @@
           {{#if isReadOnly}}
           {{else}}
           <div class='sandbox_header'>
-            <input class='submit' type='submit' value='Try it out!' data-sw-translate/>
+            <input class='submit btn btn-default' type='submit' value='Try it out!' data-sw-translate/>
             <a href='#' class='response_hider' style='display:none' data-sw-translate>Hide Response</a>
             <span class='response_throbber' style='display:none'></span>
           </div>

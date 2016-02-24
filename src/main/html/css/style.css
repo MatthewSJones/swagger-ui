@@ -41,7 +41,7 @@ h1 {
 /* tag titles */
 .swagger-section .swagger-ui-wrap ul#resources li.resource div.heading h2 a {
   color: #393939;
-  font-family: 'Arvo', serif;
+  font-family: 'Lato', serif;
   font-size: 1.5em;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource div.heading h2 a:hover {
@@ -53,7 +53,7 @@ h1 {
   display: block;
   clear: none;
   float: left;
-  font-family: 'Arvo', serif;
+  font-family: 'Lato', serif;
   font-weight: bold;
 }
 .navbar-default .navbar-collapse,

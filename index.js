@@ -1,5 +1,5 @@
 'use strict';
-
+var _ = require('lodash');
 var pack = require('./package');
 var path = require('path');
 

@@ -1,0 +1,23 @@
+﻿<div>
+    <div>
+        <p>
+            <b>The Web Store uses Json Web Tokens (JWT) for its authentication mechanism.</b><br /><br />
+            Please see <a href="https://jwt.io/introduction/">https://jwt.io/introduction/</a> for more details on JWT.
+            <br /><br />
+            The endpoint for the webstore to request a token is a POST to https://api.microsmi.com/token. <br />
+            The request takes in a DisplayName (username), a password and the request scope (claims) being requested for the user.<br /><br />
+            As of now the credentails and cliaim specific requests are authorized against Microsemi's active directory.<br /><br />
+            Example Request :
+            <br />
+            <pre><code>curl -H "Content-Type: application/json" -X POST<br />-d '{"Displayname":"spsvc","Password":"xxx"}' https://api.microsemi.com/token</code></pre>
+            <br />
+            The response if successful with contain the access token, along with the experation and the assigned claims.<br><br />
+            For the example request above the response would contain : <br /><br />
+            <pre><code>{<br />  "data":<br />  {<br />    "Authenticated": true,<br />    "ClaimsTypes" :<br />    {<br />      "unique_name": "spsvc",<br />      "WebStoreUser": true,<br />      "WebStoreAdmin" : true<br />    },<br />    "Token": "eyJhbGciOi........hbSFIG9gCIsog",<br />    "tokenExpires": 60,<br />    "User": "spsvc"<br />  }<br />}</code></pre>
+            <br />
+            If the authorization is unsuccessul a 401 will be returned in the usual error response format.<br /><br />
+            Once a token is granted it must be send for each api request in the header as :<br /><br />
+            <pre><code>Authorization: Bearer 'token-value'</code></pre>
+        </p>
+    </div>
+</div>

@@ -49,7 +49,7 @@ $(function () {
 
     var match = window.location.search.match(/url=([^&]+)/);
     window.swaggerUi =  new SwaggerUi({
-        url: match && match.length > 1 ? decodeURIComponent(match[1]) : "http://petstore.swagger.io/v2/swagger.json", //"http://localhost:8080/specs/v2/petstore.json",
+        url: match && match.length > 1 ? decodeURIComponent(match[1]) : "/swagger/v1/swagger.json", //http://localhost:8080/specs/v2/petstore.json",
         dom_id: "swagger-ui-container",
         supportedSubmitMethods: ["get", "post", "put", "delete", "patch", "head"],
         onComplete: function() {

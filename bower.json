@@ -31,7 +31,8 @@
     "handlebars": "2.0.0",
     "backbone": "1.1.2",
     "js-yaml": "3.4.6",
-    "json-editor": "0.7.22"
+    "json-editor": "0.7.22",
+    "js-cookie": "2.1.0"
   },
   "overrides": {
     "handlebars": {
@@ -39,6 +40,9 @@
     },
     "jquery": {
       "main": "jquery.min.js"
+    },
+    "js-cookie": {
+      "main": "src/js.cookie.js"
     },
     "jquery.bbq": {
       "main": "jquery.ba-bbq.min.js"

@@ -192,7 +192,7 @@ window.SwaggerUi = Backbone.Router.extend({
         this.renderGFM();
 
         if (this.options.onComplete) {
-            this.options.onComplete(this.api, this);
+           this.options.onComplete(this.api, this);
         }
 
         setTimeout(Docs.shebang.bind(this), 100);

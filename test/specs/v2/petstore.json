@@ -77,7 +77,7 @@
         },
         "security": [
           {
-            "petstore_auth": [
+            "oauth2": [
               "write:pets",
               "read:pets"
             ]
@@ -123,7 +123,7 @@
         },
         "security": [
           {
-            "petstore_auth": [
+            "oauth2": [
               "write:pets",
               "read:pets"
             ]
@@ -172,7 +172,7 @@
         },
         "security": [
           {
-            "petstore_auth": [
+            "oauth2": [
               "write:pets",
               "read:pets"
             ]
@@ -221,7 +221,7 @@
         },
         "security": [
           {
-            "petstore_auth": [
+            "oauth2": [
               "write:pets",
               "read:pets"
             ]
@@ -248,7 +248,8 @@
             "description": "ID of pet that needs to be fetched",
             "required": true,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "readOnly": true
           }
         ],
         "responses": {
@@ -270,7 +271,7 @@
             "api_key": []
           },
           {
-            "petstore_auth": [
+            "oauth2": [
               "write:pets",
               "read:pets"
             ]
@@ -321,7 +322,7 @@
         },
         "security": [
           {
-            "petstore_auth": [
+            "oauth2": [
               "write:pets",
               "read:pets"
             ]
@@ -363,7 +364,7 @@
         },
         "security": [
           {
-            "petstore_auth": [
+            "oauth2": [
               "write:pets",
               "read:pets"
             ]
@@ -741,10 +742,15 @@
       "name": "api_key",
       "in": "header"
     },
-    "petstore_auth": {
+    "oauth2": {
       "type": "oauth2",
       "authorizationUrl": "http://petstore.swagger.io/api/oauth/dialog",
-      "flow": "implicit"
+      "flow": "implicit",
+      "scopes": {       
+          "email": "Access to your email address",
+          "pets": "Access to your pets"
+      }
+
     }
   },
   "definitions": {

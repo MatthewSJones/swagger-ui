@@ -1,7 +1,13 @@
-<td class='code required'><label for='{{valueId}}'>{{name}}</label></td>
+
+
+
+<td class='code {{#if required}} required {{/if}}'>
+    <label for='{{valueId}}'>{{name}} ({{{paramType}}})</label>
+</td>
 <td>
     {{#if isBody}}
-        <textarea class='body-textarea' readonly='readonly' placeholder='(required)' name='{{name}}' id='{{valueId}}'>{{default}}</textarea>
+        <textarea class='body-textarea' readonly='readonly' {{#if required}} placeholder='(required)' {{/if}}                
+                  name='{{name}}' id='{{valueId}}'>{{default}}</textarea>
     {{else}}
         {{#if default}}
             {{default}}
@@ -11,5 +17,6 @@
     {{/if}}
 </td>
 <td class="markdown">{{{description}}}</td>
-<td>{{{paramType}}}</td>
 <td><span class="model-signature"></span></td>
+
+

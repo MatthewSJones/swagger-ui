@@ -96,17 +96,20 @@ function _dist() {
 
     var merged = merge(partials, templates);
     var swaggerAddOns = gulp.src([
-        srcAssets.html + "jwt-auth.js",
-        srcAssets.html + "swagger-ui-init.js"
+       basePath.swaggerClient + "swagger-client.js"
     ]);
 
     merged.add(swaggerAddOns);
 
-    var scripts = gulp.src([
-        srcAssets.scripts + "**/*.js",
-        basePath.swaggerClient + "swagger-client.js"
+    merged.add(gulp.src([srcAssets.scripts + "**/*.js"]));
+
+    var scripts = gulp.src([      
+        srcAssets.html + "jwt-auth.js",
+        srcAssets.html + "swagger-ui-init.js"
     ]);
-    return merge(scripts, merged)
+
+   
+    return merge(merged, scripts)
         .pipe(concat("swagger-ui.js"))
         //make non-minified version
         .pipe(header(banner, { pkg: pkg }))
@@ -163,7 +166,7 @@ function _copy() {
     // copy JavaScript files inside lib folder
     gulp
         .src(["./lib/**/*.{js,map}"])       
-        .pipe(uglify())
+        .pipe(uglify()).on("error", log)
         .pipe(gulp.dest("dist/lib"))
         .on("error", log);
 
@@ -182,7 +185,7 @@ function _copy() {
 
 gulp.task("dev-copy", ["dev-less", "copy-local-specs"], _copy);
 
-gulp.task("copy-local-specs", function() {
+gulp.task("copy-local-specs",["clean"], function () {
     // copy the test specs
     return gulp
         .src(["./test/specs/**/*"])
@@ -218,7 +221,7 @@ function log(error) {
     console.error(error.toString && error.toString());
 }
 
-gulp.task("default", ["dist", "bower_files", "copy"]);
+gulp.task("default", ["dist", "bower_files", "copy-local-specs", "copy"]);
 gulp.task("serve", ["connect", "watch"]);
 gulp.task("dev", ["default"], function() {
     gulp.start("serve");

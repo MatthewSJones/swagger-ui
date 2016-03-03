@@ -76,7 +76,7 @@ function initOAuth() {
 
     // Make sure a security type is defined to proceed.
     if (!window.swaggerUi.api.securityDefinitions[authType]) {
-        console.log("No detcted auth being used");
+        console.log("No detected auth being used");
         return;
     }
 
@@ -183,8 +183,9 @@ function UpdateLoginUi() {
 
     ScopeRequireMessage();
     // Make checkbox options for each scope isDefined by the api 
-    $("#available-scopes").html("");
-    $.each(window.swaggerUi.api.securityDefinitions[authType].scopes, function (key) {
+    $("#available-scopes").html(""); 
+    $.each(window.swaggerUi.api.securityDefinitions[authType].scopes, function (key, value) {
+        console.log(key + ":::" + value);
         $("#available-scopes").append("<label class='checkbox-inline'><input type='checkbox'/><span>" + key + "</span></label>");
     });
 }

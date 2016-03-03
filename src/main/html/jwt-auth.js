@@ -6,6 +6,7 @@
 var authType = "oauth2";
 var activeScopes = [];
 var tokenString = "";
+var authUserName = "";
 var AUTH_COOKIE_VAL = "tkn-swg-ws";
 
 function handleLogin() {
@@ -40,6 +41,7 @@ function handleLogin() {
             contentType: "application/json; charset=utf-8"
         })
         .done(function (data) {
+            authUserName = $("#username").val();
             onOAuthComplete(data);
             UpdateLoginUi();
         })
@@ -76,7 +78,7 @@ function initOAuth() {
 
     // Make sure a security type is defined to proceed.
     if (!window.swaggerUi.api.securityDefinitions[authType]) {
-        console.log("No detcted auth being used");
+        console.log("No detected auth being used");
         return;
     }
 
@@ -168,7 +170,7 @@ function UpdateLoginUi() {
         $("#auth-login").hide();
         $("#account-info").show();
         $("#api_info .info_title").after("<div id='user-info-div'>" +
-            "<p><b>Logged in as</b> : mjones</p>" +
+            "<p><b>Logged in as</b> : " + authUserName + "</p>" +
             "<p><b>Access Token</b> : " + tokenString + "</p>" +
             "</div>");
         $(".api-logout-btn").unbind().click(function() {
@@ -183,8 +185,9 @@ function UpdateLoginUi() {
 
     ScopeRequireMessage();
     // Make checkbox options for each scope isDefined by the api 
-    $("#available-scopes").html("");
-    $.each(window.swaggerUi.api.securityDefinitions[authType].scopes, function (key) {
+    $("#available-scopes").html(""); 
+    $.each(window.swaggerUi.api.securityDefinitions[authType].scopes, function (key, value) {
+        console.log(key + ":::" + value);
         $("#available-scopes").append("<label class='checkbox-inline'><input type='checkbox'/><span>" + key + "</span></label>");
     });
 }

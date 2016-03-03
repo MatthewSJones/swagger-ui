@@ -44,17 +44,16 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
 
         // set up the UI for input
         this.model.auths = [];
-
+   
         for (key in this.model.securityDefinitions) {
             value = this.model.securityDefinitions[key];
-
             this.model.auths.push({
                 name: key,
                 type: value.type,
                 value: value
             });
         }
-
+       
         if ("validatorUrl" in opts.swaggerOptions) {
             // Validator URL specified explicitly
             this.model.validatorUrl = opts.swaggerOptions.validatorUrl;
@@ -81,12 +80,13 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
 
     },
 
-    render: function() {
+    render: function () {
+
         if (this.model.securityDefinitions) {
             for (var name in this.model.securityDefinitions) {
                 var auth = this.model.securityDefinitions[name];
-                var button;
-
+                var button; 
+                console.log(auth.type);
                 if (auth.type === "apiKey" && $("#apikey_button").length === 0) {
                     button = new SwaggerUi.Views.ApiKeyButton({ model: auth, router: this.router }).render().el;
                     $(".auth_main_container").append(button);
@@ -96,14 +96,21 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
                     button = new SwaggerUi.Views.BasicAuthButton({ model: auth, router: this.router }).render().el;
                     $(".auth_main_container").append(button);
                 }
+
+                if (auth.type === "oauth2") {
+                    console.log(Handlebars.templates.oauth2_view);
+                    $("#auth-container").html(Handlebars.templates.oauth2_view);
+                }
             }
         }
 
         // Render the outer container for resources
         $(this.el).html(Handlebars.templates.main(this.model));
 
-        // Render each resource
+        //footer
+        $(".footer").html(Handlebars.templates.main_footer(this.model));
 
+        // Render each resource
         var resources = {};
         var counter = 0;
         for (var i = 0; i < this.model.apisArray.length; i++) {
@@ -118,9 +125,9 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
             this.addResource(resource, this.model.auths);
         }
 
-        $(".propWrap").hover(function onHover() {
+        $(".propWrap").hover(function() {
             $(".optionsWrapper", $(this)).show();
-        }, function offhover() {
+        }, function() {
             $(".optionsWrapper", $(this)).hide();
         });
         return this;

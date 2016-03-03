@@ -7,7 +7,7 @@ SwaggerUi.Views.StatusCodeView = Backbone.View.extend({
     },
 
     render: function() {
-        var responseModel;
+        var responseModel; 
         var value = this.router.api.models[this.model.responseModel];
         $(this.el).html(Handlebars.templates.status_code(this.model));
 

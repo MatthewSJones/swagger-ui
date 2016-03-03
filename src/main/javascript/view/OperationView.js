@@ -251,6 +251,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       statusCode = ref5[q];
       statusCode.isXML = isXML;
       statusCode.isJSON = isJSON;
+      statusCode.codeDescription = HTTP_STATUS_CODES[statusCode.code];
       if (!_.isUndefined(statusCode.headers)) {
         statusCode.headers = this.parseHeadersType(statusCode.headers);
       }

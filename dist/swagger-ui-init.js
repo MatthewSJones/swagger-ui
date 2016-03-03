@@ -1,11 +1,55 @@
-$(function() {
+
+
+var HTTP_STATUS_CODES = {
+    '200': "OK",
+    '201': "Created",
+    '202': "Accepted",
+    '203': "Non-Authoritative Information",
+    '204': "No Content",
+    '205': "Reset Content",
+    '206': "Partial Content",
+    '300': "Multiple Choices",
+    '301': "Moved Permanently",
+    '302': "Found",
+    '303': "See Other",
+    '304': "Not Modified",
+    '305': "Use Proxy",
+    '307': "Temporary Redirect",
+    '400': "Bad Request",
+    '401': "Unauthorized",
+    '402': "Payment Required",
+    '403': "Forbidden",
+    '404': "Not Found",
+    '405': "Method Not Allowed",
+    '406': "Not Acceptable",
+    '407': "Proxy Authentication Required",
+    '408': "Request Timeout",
+    '409': "Conflict",
+    '410': "Gone",
+    '411': "Length Required",
+    '412': "Precondition Failed",
+    '413': "Request Entity Too Large",
+    '414': "Request-URI Too Long",
+    '415': "Unsupported Media Type",
+    '416': "Requested Range Not Satisfiable",
+    '417': "Expectation Failed",
+    '500': "Internal Server Error",
+    '501': "Not Implemented",
+    '502': "Bad Gateway",
+    '503': "Service Unavailable",
+    '504': "Gateway Timeout",
+    '505': "HTTP Version Not Supported"
+};
+
+
+$(function () {
     /// <summary>
     /// Kick off swagger ui
     /// </summary>
 
     var match = window.location.search.match(/url=([^&]+)/);
     window.swaggerUi =  new SwaggerUi({
-        url: match && match.length > 1 ? decodeURIComponent(match[1]) : "http://petstore.swagger.io/v2/swagger.json",
+        url: match && match.length > 1 ? decodeURIComponent(match[1]) : "http://petstore.swagger.io/v2/swagger.json", //"http://localhost:8080/specs/v2/petstore.json",
         dom_id: "swagger-ui-container",
         supportedSubmitMethods: ["get", "post", "put", "delete", "patch", "head"],
         onComplete: function() {
@@ -15,6 +59,8 @@ $(function() {
             console.log("Unable to Load SwaggerUI");
         },
         docExpansion: "none",
+        validatorUrl: false,
+        basePath: "https://api.microsemi.com",
         jsonEditor: false,
         apisSorter: "alpha",
         operationsSorter: function (a, b) {

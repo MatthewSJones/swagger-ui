@@ -21,8 +21,7 @@ SwaggerUi.Views.ParameterView = Backbone.View.extend({
         var modelDefinitions = this.model.modelSignature.definitions;
         var schema = this.model.schema || {};
         var consumes = this.model.consumes || [];
-        var sampleJSON, signatureView;
-
+        var sampleJson;
 
         if (typeof type === "undefined") {
             if (schema.$ref) {
@@ -54,21 +53,21 @@ SwaggerUi.Views.ParameterView = Backbone.View.extend({
 
         var isXML = this.contains(consumes, "xml");
         var isJSON = isXML ? this.contains(consumes, "json") : true;
-        sampleJSON = SwaggerUi.partials.signature.createParameterJSONSample(modelType, modelDefinitions);
+        sampleJson = SwaggerUi.partials.signature.createParameterJSONSample(modelType, modelDefinitions);
 
         var template = this.template();
         $(this.el).html(template(this.model));
 
         var signatureModel = {
-            sampleJSON: isJSON ? sampleJSON : false,
-            sampleXML: sampleJSON && isXML ? SwaggerUi.partials.signature.createXMLSample(schema, modelDefinitions, true) : false,
+            sampleJSON: isJSON ? sampleJson : false,
+            sampleXML: sampleJson && isXML ? SwaggerUi.partials.signature.createXMLSample(schema, modelDefinitions, true) : false,
             isParam: true,
             signature: SwaggerUi.partials.signature.getParameterModelSignature(modelType, modelDefinitions),
             defaultRendering: this.model.defaultRendering
         };
 
-        if (sampleJSON) {
-            signatureView = new SwaggerUi.Views.SignatureView({ model: signatureModel, tagName: "div" });
+        if (sampleJson) {
+            var signatureView = new SwaggerUi.Views.SignatureView({ model: signatureModel, tagName: "div" });
             $(".model-signature", $(this.el)).append(signatureView.render().el);
         } else {
             $(".model-signature", $(this.el)).html(this.model.signature);
@@ -107,7 +106,6 @@ SwaggerUi.Views.ParameterView = Backbone.View.extend({
                     }
                 });
         }
-
 
         if (this.model.isBody) {
             isParam = true;
@@ -173,17 +171,9 @@ SwaggerUi.Views.ParameterView = Backbone.View.extend({
             return Handlebars.templates.param_list;
         } else {
             if (this.options.readOnly) {
-                if (this.model.required) {
-                    return Handlebars.templates.param_readonly_required;
-                } else {
-                    return Handlebars.templates.param_readonly;
-                }
+                return Handlebars.templates.param_readonly;
             } else {
-                if (this.model.required) {
-                    return Handlebars.templates.param_required;
-                } else {
-                    return Handlebars.templates.param;
-                }
+                return Handlebars.templates.param_required;
             }
         }
     }

@@ -6,6 +6,7 @@
 var authType = "oauth2";
 var activeScopes = [];
 var tokenString = "";
+var authUserName = "";
 var AUTH_COOKIE_VAL = "tkn-swg-ws";
 
 function handleLogin() {
@@ -40,6 +41,7 @@ function handleLogin() {
             contentType: "application/json; charset=utf-8"
         })
         .done(function (data) {
+            authUserName = $("#username").val();
             onOAuthComplete(data);
             UpdateLoginUi();
         })
@@ -168,7 +170,7 @@ function UpdateLoginUi() {
         $("#auth-login").hide();
         $("#account-info").show();
         $("#api_info .info_title").after("<div id='user-info-div'>" +
-            "<p><b>Logged in as</b> : mjones</p>" +
+            "<p><b>Logged in as</b> : " + authUserName + "</p>" +
             "<p><b>Access Token</b> : " + tokenString + "</p>" +
             "</div>");
         $(".api-logout-btn").unbind().click(function() {

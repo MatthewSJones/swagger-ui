@@ -14,48 +14,47 @@ function handleLogin() {
     ///     Handles a user login request for a token
     /// </summary>
 
-    //Check first if an access token is set in the cookie
-    if (TryCookieToken()) {
+    $.each($(".api-scopes").find("input:checked").parent().find("span"), function (key, value) {
+        if ($(value).html() && $.inArray($(value).html(), activeScopes) === -1) {
+            activeScopes.push($(value).html());
+        }
+    });
+
+    $("#swagger-ui-container").hide();
+    $("#message-bar").after("<div id='auth-loading-div' class='swagger-ui-wrap container'>Authorizing....</div>");
+
+    if ($("#username").val() === "" || $("#password").val() === "")
+    {
+        $("#message-bar").html("<div class='alert alert-warning'>Please provide a username and password to log in.</div>");
         return;
     }
 
-    UpdateLoginUi();
+    $("#swagger-ui-container").hide();
+    $("#message-bar").after("<div id='auth-loading-div' class='swagger-ui-wrap container'>Authorizing....</div>");
 
-    // Click event for 'login' button : Gather the scopes the user selected to be processed
-    $(".api-popup-authbtn").click(function () {
-        $.each($(".api-scopes").find("input:checked").parent().find("span"), function (key, value) {
-            if ($(value).html() && $.inArray($(value).html(), activeScopes) === -1) {
-                activeScopes.push($(value).html());
-            }
-        });
+    // Make the request for a token from the api
+    $.ajax({
+        url: window.swaggerUi.api.securityDefinitions[authType].tokenUrl,
+        type: "POST",
+        data: JSON.stringify({ 'Username': $("#username").val(), "Password": $("#password").val(), "Scopes": activeScopes.join(",") }),
+        dataType: "json",
 
-        $("#swagger-ui-container").hide();
-        $("#message-bar").after("<div id='auth-loading-div' class='swagger-ui-wrap container'>Authorizing....</div>");
-
-        // Make the request for a token from the api
-        $.ajax({
-            url: window.swaggerUi.api.securityDefinitions[authType].tokenUrl,
-            type: "POST",
-            data: JSON.stringify({ 'Username': $("#username").val(), "Password": $("#password").val(), "Scopes": activeScopes.join(",") }),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8"
-        })
-        .done(function (data) {
-            authUserName = $("#username").val();
-            onOAuthComplete(data);
-            UpdateLoginUi();
-        })
-        .fail(function (data) {
-            alert("fail?");
-            $("#message-bar").html("<div class='alert alert-danger'>" + data.data.details + "</div>");
-        })
-        .always(function () {
-            $("#auth-loading-div").remove();
-            $("#swagger-ui-container").show();
-        });
-        
-        return;
+        contentType: "application/json; charset=utf-8"
+    })
+    .done(function (data) {
+        authUserName = $("#username").val();
+        onOAuthComplete(data);
+        UpdateLoginUi();
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+        $("#message-bar").html("<div class='alert alert-danger'>Login Failed : " + errorThrown + "</div>");
+    })
+    .always(function() {
+        $("#auth-loading-div").remove();
+        $("#swagger-ui-container").show();
     });
+        
+    return;
 }
 
 function handleLogout() {
@@ -64,7 +63,7 @@ function handleLogout() {
     /// </summary>
     activeScopes = [];
     tokenString = "";
-    window.Cookies(AUTH_COOKIE_VAL, undefined);
+    Cookies.remove(AUTH_COOKIE_VAL);
     UpdateLoginUi();
     window.swaggerUi.api.clientAuthorizations.remove(authType);
     $(".api-ic.ic-on").addClass("ic-off").removeClass("ic-on");
@@ -82,7 +81,11 @@ function initOAuth() {
         return;
     }
 
-    handleLogin();
+    if (TryCookieToken()) {
+        return;
+    }
+
+    UpdateLoginUi();
 
     $(".api-ic").unbind().click(function(s) {
         $(s.target).hasClass("ic-off") ? alert("Please login to access this end point") : handleLogout();
@@ -122,12 +125,12 @@ function TryCookieToken() {
     /// <summary>
     ///     If a cookie is present, then use the token value from it for access
     /// </summary>
-    var tryForToken = window.Cookies.get(AUTH_COOKIE_VAL);
+    var tryForToken = window.Cookies.get(AUTH_COOKIE_VAL); 
 
     if (tryForToken) {
-        tokenString = tryForToken;
-        SetAuthHeader();
-        UpdateLoginUi();
+        tokenString = tryForToken; 
+        SetAuthHeader(); 
+        UpdateLoginUi(); 
 
         return true;
     }
@@ -168,6 +171,11 @@ function UpdateLoginUi() {
 
         $("#user-info-div").remove();
         $("#auth-login").hide();
+        $("#auth-logout").show();
+
+        // Click event for logout button
+        $(".api-logout-btn ").click(handleLogout);
+
         $("#account-info").show();
         $("#api_info .info_title").after("<div id='user-info-div'>" +
             "<p><b>Logged in as</b> : " + authUserName + "</p>" +
@@ -179,7 +187,12 @@ function UpdateLoginUi() {
     }
     else {
         $("#account-info").hide();
+        $("#auth-logout").hide();
         $("#auth-login").show();
+
+        //clickevent for login button
+        $(".api-popup-authbtn").click(handleLogin);
+
         $("#user-info-div").remove();
     }
 

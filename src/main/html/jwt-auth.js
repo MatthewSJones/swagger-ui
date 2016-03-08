@@ -20,8 +20,6 @@ function handleLogin() {
         }
     });
 
-    $("#swagger-ui-container").hide();
-    $("#message-bar").after("<div id='auth-loading-div' class='swagger-ui-wrap container'>Authorizing....</div>");
 
     if ($("#username").val() === "" || $("#password").val() === "")
     {
@@ -44,6 +42,7 @@ function handleLogin() {
     .done(function (data) {
         authUserName = $("#username").val();
         onOAuthComplete(data);
+        $("#message-bar").html("");
         UpdateLoginUi();
     })
     .fail(function (jqXHR, textStatus, errorThrown) {

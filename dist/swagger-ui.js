@@ -15,207 +15,6 @@ this["Handlebars"]["templates"]["apikey_button_view"] = Handlebars.template({"co
     + escapeExpression(((helper = (helper = helpers.keyName || (depth0 != null ? depth0.keyName : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"keyName","hash":{},"data":data}) : helper)))
     + "</label></div>\n    <input placeholder='api_key' class='auth_input' id='input_apiKey_entry' name='apiKey' type='text'/>\n    <div class='auth_submit'><a class='auth_submit_button' id='apply_api_key' href='#' data-sw-translate>apply</a></div>\n  </div>\n</div>\n";
 },"useData":true});
-'use strict';
-
-
-$(function() {
-
-	// Helper function for vertically aligning DOM elements
-	// http://www.seodenver.com/simple-vertical-align-plugin-for-jquery/
-	$.fn.vAlign = function() {
-		return this.each(function(){
-			var ah = $(this).height();
-			var ph = $(this).parent().height();
-			var mh = (ph - ah) / 2;
-			$(this).css('margin-top', mh);
-		});
-	};
-
-	$.fn.stretchFormtasticInputWidthToParent = function() {
-		return this.each(function(){
-			var p_width = $(this).closest("form").innerWidth();
-			var p_padding = parseInt($(this).closest("form").css('padding-left') ,10) + parseInt($(this).closest('form').css('padding-right'), 10);
-			var this_padding = parseInt($(this).css('padding-left'), 10) + parseInt($(this).css('padding-right'), 10);
-			$(this).css('width', p_width - p_padding - this_padding);
-		});
-	};
-
-	$('form.formtastic li.string input, form.formtastic textarea').stretchFormtasticInputWidthToParent();
-
-	// Vertically center these paragraphs
-	// Parent may need a min-height for this to work..
-	$('ul.downplayed li div.content p').vAlign();
-
-	// When a sandbox form is submitted..
-	$("form.sandbox").submit(function(){
-
-		var error_free = true;
-
-		// Cycle through the forms required inputs
- 		$(this).find("input.required").each(function() {
-
-			// Remove any existing error styles from the input
-			$(this).removeClass('error');
-
-			// Tack the error style on if the input is empty..
-			if ($(this).val() === '') {
-				$(this).addClass('error');
-				$(this).wiggle();
-				error_free = false;
-			}
-
-		});
-
-		return error_free;
-	});
-
-});
-
-function clippyCopiedCallback() {
-  $('#api_key_copied').fadeIn().delay(1000).fadeOut();
-
-  // var b = $("#clippy_tooltip_" + a);
-  // b.length != 0 && (b.attr("title", "copied!").trigger("tipsy.reload"), setTimeout(function() {
-  //   b.attr("title", "copy to clipboard")
-  // },
-  // 500))
-}
-
-// Logging function that accounts for browsers that don't have window.console
-function log(){
-  log.history = log.history || [];
-  log.history.push(arguments);
-  if(this.console){
-    console.log( Array.prototype.slice.call(arguments)[0] );
-  }
-}
-
-// Handle browsers that do console incorrectly (IE9 and below, see http://stackoverflow.com/a/5539378/7913)
-if (Function.prototype.bind && console && typeof console.log === "object") {
-    [
-      "log","info","warn","error","assert","dir","clear","profile","profileEnd"
-    ].forEach(function (method) {
-        console[method] = this.bind(console[method], console);
-    }, Function.prototype.call);
-}
-
-window.Docs = {
-
-	shebang: function() {
-
-		// If shebang has an operation nickname in it..
-		// e.g. /docs/#!/words/get_search
-		var fragments = $.param.fragment().split('/');
-		fragments.shift(); // get rid of the bang
-
-		switch (fragments.length) {
-			case 1:
-        if (fragments[0].length > 0) { // prevent matching "#/"
-          // Expand all operations for the resource and scroll to it
-          var dom_id = 'resource_' + fragments[0];
-
-          Docs.expandEndpointListForResource(fragments[0]);
-          $("#"+dom_id).slideto({highlight: false});
-        }
-				break;
-			case 2:
-				// Refer to the endpoint DOM element, e.g. #words_get_search
-
-        // Expand Resource
-        Docs.expandEndpointListForResource(fragments[0]);
-        $("#"+dom_id).slideto({highlight: false});
-
-            // Expand operation
-            var li_dom_id = fragments.join('_');
-            var li_content_dom_id = li_dom_id + "_content";
-
-
-            Docs.expandOperation($('#'+li_content_dom_id));
-            $('#'+li_dom_id).slideto({highlight: false});
-            break;
-		}
-	},
-
-	toggleEndpointListForResource: function(resource) {
-		var elem = $('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
-		if (elem.is(':visible')) {
-			$.bbq.pushState('#/', 2);
-			Docs.collapseEndpointListForResource(resource);
-		} else {
-            $.bbq.pushState('#/' + resource, 2);
-			Docs.expandEndpointListForResource(resource);
-		}
-	},
-
-	// Expand resource
-	expandEndpointListForResource: function(resource) {
-		var resource = Docs.escapeResourceName(resource);
-		if (resource == '') {
-			$('.resource ul.endpoints').slideDown();
-			return;
-		}
-
-		$('li#resource_' + resource).addClass('active');
-
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
-		elem.slideDown();
-	},
-
-	// Collapse resource and mark as explicitly closed
-	collapseEndpointListForResource: function(resource) {
-		var resource = Docs.escapeResourceName(resource);
-		if (resource == '') {
-			$('.resource ul.endpoints').slideUp();
-			return;
-		}
-
-		$('li#resource_' + resource).removeClass('active');
-
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
-		elem.slideUp();
-	},
-
-	expandOperationsForResource: function(resource) {
-		// Make sure the resource container is open..
-		Docs.expandEndpointListForResource(resource);
-
-		if (resource == '') {
-			$('.resource ul.endpoints li.operation div.content').slideDown();
-			return;
-		}
-
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.expandOperation($(this));
-		});
-	},
-
-	collapseOperationsForResource: function(resource) {
-		// Make sure the resource container is open..
-		Docs.expandEndpointListForResource(resource);
-
-		if (resource == '') {
-			$('.resource ul.endpoints li.operation div.content').slideUp();
-			return;
-		}
-
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.collapseOperation($(this));
-		});
-	},
-
-	escapeResourceName: function(resource) {
-		return resource.replace(/[!"#$%&'()*+,.\/:;<=>?@\[\\\]\^`{|}~]/g, "\\$&");
-	},
-
-	expandOperation: function(elem) {
-		elem.slideDown();
-	},
-
-	collapseOperation: function(elem) {
-		elem.slideUp();
-	}
-};
-
 /**
  * swagger-client - swagger-client is a javascript client for use with swaggering APIs.
  * @version v2.1.11
@@ -23995,8 +23794,6 @@ function handleLogin() {
         }
     });
 
-    $("#swagger-ui-container").hide();
-    $("#message-bar").after("<div id='auth-loading-div' class='swagger-ui-wrap container'>Authorizing....</div>");
 
     if ($("#username").val() === "" || $("#password").val() === "")
     {
@@ -24179,12 +23976,337 @@ function UpdateLoginUi() {
         $("#available-scopes").append("<label class='checkbox-inline'><input type='checkbox'/><span>" + key + "</span></label>");
     });
 }
+'use strict';
+
+
+$(function() {
+
+	// Helper function for vertically aligning DOM elements
+	// http://www.seodenver.com/simple-vertical-align-plugin-for-jquery/
+	$.fn.vAlign = function() {
+		return this.each(function(){
+			var ah = $(this).height();
+			var ph = $(this).parent().height();
+			var mh = (ph - ah) / 2;
+			$(this).css('margin-top', mh);
+		});
+	};
+
+	$.fn.stretchFormtasticInputWidthToParent = function() {
+		return this.each(function(){
+			var p_width = $(this).closest("form").innerWidth();
+			var p_padding = parseInt($(this).closest("form").css('padding-left') ,10) + parseInt($(this).closest('form').css('padding-right'), 10);
+			var this_padding = parseInt($(this).css('padding-left'), 10) + parseInt($(this).css('padding-right'), 10);
+			$(this).css('width', p_width - p_padding - this_padding);
+		});
+	};
+
+	$('form.formtastic li.string input, form.formtastic textarea').stretchFormtasticInputWidthToParent();
+
+	// Vertically center these paragraphs
+	// Parent may need a min-height for this to work..
+	$('ul.downplayed li div.content p').vAlign();
+
+	// When a sandbox form is submitted..
+	$("form.sandbox").submit(function(){
+
+		var error_free = true;
+
+		// Cycle through the forms required inputs
+ 		$(this).find("input.required").each(function() {
+
+			// Remove any existing error styles from the input
+			$(this).removeClass('error');
+
+			// Tack the error style on if the input is empty..
+			if ($(this).val() === '') {
+				$(this).addClass('error');
+				$(this).wiggle();
+				error_free = false;
+			}
+
+		});
+
+		return error_free;
+	});
+
+});
+
+function clippyCopiedCallback() {
+  $('#api_key_copied').fadeIn().delay(1000).fadeOut();
+
+  // var b = $("#clippy_tooltip_" + a);
+  // b.length != 0 && (b.attr("title", "copied!").trigger("tipsy.reload"), setTimeout(function() {
+  //   b.attr("title", "copy to clipboard")
+  // },
+  // 500))
+}
+
+// Logging function that accounts for browsers that don't have window.console
+function log(){
+  log.history = log.history || [];
+  log.history.push(arguments);
+  if(this.console){
+    console.log( Array.prototype.slice.call(arguments)[0] );
+  }
+}
+
+// Handle browsers that do console incorrectly (IE9 and below, see http://stackoverflow.com/a/5539378/7913)
+if (Function.prototype.bind && console && typeof console.log === "object") {
+    [
+      "log","info","warn","error","assert","dir","clear","profile","profileEnd"
+    ].forEach(function (method) {
+        console[method] = this.bind(console[method], console);
+    }, Function.prototype.call);
+}
+
+window.Docs = {
+
+	shebang: function() {
+
+		// If shebang has an operation nickname in it..
+		// e.g. /docs/#!/words/get_search
+		var fragments = $.param.fragment().split('/');
+		fragments.shift(); // get rid of the bang
+
+		switch (fragments.length) {
+			case 1:
+        if (fragments[0].length > 0) { // prevent matching "#/"
+          // Expand all operations for the resource and scroll to it
+          var dom_id = 'resource_' + fragments[0];
+
+          Docs.expandEndpointListForResource(fragments[0]);
+          $("#"+dom_id).slideto({highlight: false});
+        }
+				break;
+			case 2:
+				// Refer to the endpoint DOM element, e.g. #words_get_search
+
+        // Expand Resource
+        Docs.expandEndpointListForResource(fragments[0]);
+        $("#"+dom_id).slideto({highlight: false});
+
+            // Expand operation
+            var li_dom_id = fragments.join('_');
+            var li_content_dom_id = li_dom_id + "_content";
+
+
+            Docs.expandOperation($('#'+li_content_dom_id));
+            $('#'+li_dom_id).slideto({highlight: false});
+            break;
+		}
+	},
+
+	toggleEndpointListForResource: function(resource) {
+		var elem = $('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
+		if (elem.is(':visible')) {
+			$.bbq.pushState('#/', 2);
+			Docs.collapseEndpointListForResource(resource);
+		} else {
+            $.bbq.pushState('#/' + resource, 2);
+			Docs.expandEndpointListForResource(resource);
+		}
+	},
+
+	// Expand resource
+	expandEndpointListForResource: function(resource) {
+		var resource = Docs.escapeResourceName(resource);
+		if (resource == '') {
+			$('.resource ul.endpoints').slideDown();
+			return;
+		}
+
+		$('li#resource_' + resource).addClass('active');
+
+		var elem = $('li#resource_' + resource + ' ul.endpoints');
+		elem.slideDown();
+	},
+
+	// Collapse resource and mark as explicitly closed
+	collapseEndpointListForResource: function(resource) {
+		var resource = Docs.escapeResourceName(resource);
+		if (resource == '') {
+			$('.resource ul.endpoints').slideUp();
+			return;
+		}
+
+		$('li#resource_' + resource).removeClass('active');
+
+		var elem = $('li#resource_' + resource + ' ul.endpoints');
+		elem.slideUp();
+	},
+
+	expandOperationsForResource: function(resource) {
+		// Make sure the resource container is open..
+		Docs.expandEndpointListForResource(resource);
+
+		if (resource == '') {
+			$('.resource ul.endpoints li.operation div.content').slideDown();
+			return;
+		}
+
+		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+			Docs.expandOperation($(this));
+		});
+	},
+
+	collapseOperationsForResource: function(resource) {
+		// Make sure the resource container is open..
+		Docs.expandEndpointListForResource(resource);
+
+		if (resource == '') {
+			$('.resource ul.endpoints li.operation div.content').slideUp();
+			return;
+		}
+
+		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+			Docs.collapseOperation($(this));
+		});
+	},
+
+	escapeResourceName: function(resource) {
+		return resource.replace(/[!"#$%&'()*+,.\/:;<=>?@\[\\\]\^`{|}~]/g, "\\$&");
+	},
+
+	expandOperation: function(elem) {
+		elem.slideDown();
+	},
+
+	collapseOperation: function(elem) {
+		elem.slideUp();
+	}
+};
+
 Handlebars.registerPartial("Errors", Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class=\"\">\r\n    <div>\r\n        <p>All non 200 responses will be in the form of:</p>\r\n        <pre id=\"errors-code\"><code>{<br />  \"errors\" :<br />  [<br />    \"Status\" : int <i> (http status code)</i>,<br />    \"Code\" : int <i> (Web service specific error for more details)</i>,<br />    \"Details\" : string <i>(Details about the error)</i>,<br />    \"Link\" : string <i> (Link for more information on the error)</i><br />  ]<br />  ,.....<br />}</code></pre>\r\n    </div>\r\n    <br />\r\n    <div>\r\n        HTTP status codes the service may return :\r\n    </div>\r\n    <br />\r\n    <table class=\"table\">\r\n        <thead>\r\n            <tr>\r\n                <th>Code</th>\r\n                <th>Text</th>\r\n                <th>Description</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n            <tr>\r\n                <th>200</th>\r\n                <td>OK</td>\r\n                <td>Success</td>\r\n            </tr>\r\n            <tr>\r\n                <th>304</th>\r\n                <td>Not Modified</td>\r\n                <td>There was no new data to return.</td>\r\n            </tr>\r\n            <tr>\r\n                <th>400</th>\r\n                <td>Bad Request</td>\r\n                <td>The request was invalid or cannot be fully processed</td>\r\n            </tr>\r\n            <tr>\r\n                <th>401</th>\r\n                <td>Unauthorized</td>\r\n                <td>The request needs proper credentials</td>\r\n            </tr>\r\n            <tr>\r\n                <th>403</th>\r\n                <td>Forbidden</td>\r\n                <td>Proper credentials were given, but the request is not allowed for the given credentials</td>\r\n            </tr>\r\n            <tr>\r\n                <th>404</th>\r\n                <td>Not Found</td>\r\n                <td>The URI requested is invalid or the resource requested does not exist</td>\r\n            </tr>\r\n            <tr>\r\n                <th>410</th>\r\n                <td>Gone</td>\r\n                <td>The endpoint no longer exists</td>\r\n            </tr>\r\n            <tr>\r\n                <th>422</th>\r\n                <td>Unprocessable Entity</td>\r\n                <td>The request can not be proccessed with the given parameters</td>\r\n            </tr>\r\n            <tr>\r\n                <th>500</th>\r\n                <td>Internal Server Error</td>\r\n                <td>Something unexpected went wrong.</td>\r\n            </tr>\r\n            <tr>\r\n                <th>503</th>\r\n                <td>Service Unavailable</td>\r\n                <td>The web service is currently down, Try again later.</td>\r\n            </tr>\r\n        </tbody>\r\n    </table>\r\n</div>";
   },"useData":true}));
 this["Handlebars"]["templates"]["basic_auth_button_view"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class='auth_button' id='basic_auth_button'><img class='auth_icon' src='images/password.jpeg'></div>\r\n<div class='auth_container' id='basic_auth_container'>\r\n    <div class='key_input_container'>\r\n        <div class=\"auth_label\"><label for=\"input_username\" data-sw-translate>Username</label></div>\r\n        <input placeholder=\"username\" class=\"auth_input\" id=\"input_username\" name=\"username\" type=\"text\" />\r\n        <div class=\"auth_label\"><label for=\"password\" data-sw-translate>Password</label></div>\r\n        <input placeholder=\"password\" class=\"auth_input\" id=\"input_password\" name=\"password\" type=\"password\" />\r\n        <div class='auth_submit'><a class='auth_submit_button' id=\"apply_basic_auth\" href=\"#\">apply</a></div>\r\n    </div>\r\n</div>\n\n";
   },"useData":true});
+
+
+var HTTP_STATUS_CODES = {
+    '200': "OK",
+    '201': "Created",
+    '202': "Accepted",
+    '203': "Non-Authoritative Information",
+    '204': "No Content",
+    '205': "Reset Content",
+    '206': "Partial Content",
+    '300': "Multiple Choices",
+    '301': "Moved Permanently",
+    '302': "Found",
+    '303': "See Other",
+    '304': "Not Modified",
+    '305': "Use Proxy",
+    '307': "Temporary Redirect",
+    '400': "Bad Request",
+    '401': "Unauthorized",
+    '402': "Payment Required",
+    '403': "Forbidden",
+    '404': "Not Found",
+    '405': "Method Not Allowed",
+    '406': "Not Acceptable",
+    '407': "Proxy Authentication Required",
+    '408': "Request Timeout",
+    '409': "Conflict",
+    '410': "Gone",
+    '411': "Length Required",
+    '412': "Precondition Failed",
+    '413': "Request Entity Too Large",
+    '414': "Request-URI Too Long",
+    '415': "Unsupported Media Type",
+    '416': "Requested Range Not Satisfiable",
+    '417': "Expectation Failed",
+    '422': "Unprocessable Entity",
+    '500': "Internal Server Error",
+    '501': "Not Implemented",
+    '502': "Bad Gateway",
+    '503': "Service Unavailable",
+    '504': "Gateway Timeout",
+    '505': "HTTP Version Not Supported"
+};
+
+
+$(function () {
+    /// <summary>
+    /// Kick off swagger ui
+    /// </summary>
+
+    var match = window.location.search.match(/url=([^&]+)/);
+    window.swaggerUi =  new SwaggerUi({
+        url: match && match.length > 1 ? decodeURIComponent(match[1]) : "http://localhost:5000/swagger/v1/swagger.json", //http://localhost:8080/specs/v2/petstore.json",
+        dom_id: "swagger-ui-container",
+        supportedSubmitMethods: ["get", "post", "put", "delete", "patch", "head"],
+        onComplete: function() {
+            PostBootChanges();          
+        },
+        onFailure: function() {
+            console.log("Unable to Load SwaggerUI");
+        },
+        docExpansion: "none",
+        validatorUrl: false,
+        jsonEditor: false,
+        apisSorter: "alpha",
+        operationsSorter: function (a, b) {
+            //Sort by HTTP Method type and also then path alphabetically
+            var httpMethodAndPathA = a.method + a.path;
+            var httpMethodAndPathB = b.method + b.path;
+            return httpMethodAndPathA.localeCompare(httpMethodAndPathB);
+        },
+        defaultModelRendering: "schema",
+        showRequestHeaders: true
+    });
+
+    window.swaggerUi.load();
+});
+
+
+function PostBootChanges()
+{
+    /// <summary>
+    /// Stuff to do after swagger ui is loaded
+    /// </summary>
+
+    //initialize auth
+    if (typeof initOAuth === "function") {
+        initOAuth();
+    }
+
+    //Show the 'help' tabs at the top info section
+    $("#api_info").append(window.Handlebars.templates["panel-info"]);
+
+
+    //kick off highlight js
+    $("pre code").each(function (i, e) {
+        window.hljs.highlightBlock(e);
+    });
+
+    //Remove extra columns from Response Area of error status codes
+    $(".fullwidth tr").each(function () {
+        var responseModelCol = 2;
+        var headersCol = 3;
+        var headerNode = $(this.cells[3]);
+
+        if ($(headerNode).html() === "Headers") {
+            $($(headerNode).parent().parent().parent().find("tr")).each(function () {
+                this.removeChild(this.cells[headersCol]);
+                this.removeChild(this.cells[responseModelCol]);
+            });
+        }
+    });
+
+    //Don't scroll anywhere when a panel is opened.
+    $(".panel").click(function (e) {
+        e.preventDefault();
+    });
+
+    //add bootstrap container class to match width of rest of the page
+    $("#api_info").addClass("container");
+
+    //Get rid of swagger ui response type selection
+    $(".response-content-type").remove();
+}
 /*global JSONEditor*/
 "use strict";
 
@@ -24511,130 +24633,6 @@ window.SwaggerUi.partials = {};
 }(this, function() {
     return SwaggerUi;
 }));
-
-
-var HTTP_STATUS_CODES = {
-    '200': "OK",
-    '201': "Created",
-    '202': "Accepted",
-    '203': "Non-Authoritative Information",
-    '204': "No Content",
-    '205': "Reset Content",
-    '206': "Partial Content",
-    '300': "Multiple Choices",
-    '301': "Moved Permanently",
-    '302': "Found",
-    '303': "See Other",
-    '304': "Not Modified",
-    '305': "Use Proxy",
-    '307': "Temporary Redirect",
-    '400': "Bad Request",
-    '401': "Unauthorized",
-    '402': "Payment Required",
-    '403': "Forbidden",
-    '404': "Not Found",
-    '405': "Method Not Allowed",
-    '406': "Not Acceptable",
-    '407': "Proxy Authentication Required",
-    '408': "Request Timeout",
-    '409': "Conflict",
-    '410': "Gone",
-    '411': "Length Required",
-    '412': "Precondition Failed",
-    '413': "Request Entity Too Large",
-    '414': "Request-URI Too Long",
-    '415': "Unsupported Media Type",
-    '416': "Requested Range Not Satisfiable",
-    '417': "Expectation Failed",
-    '422': "Unprocessable Entity",
-    '500': "Internal Server Error",
-    '501': "Not Implemented",
-    '502': "Bad Gateway",
-    '503': "Service Unavailable",
-    '504': "Gateway Timeout",
-    '505': "HTTP Version Not Supported"
-};
-
-
-$(function () {
-    /// <summary>
-    /// Kick off swagger ui
-    /// </summary>
-
-    var match = window.location.search.match(/url=([^&]+)/);
-    window.swaggerUi =  new SwaggerUi({
-        url: match && match.length > 1 ? decodeURIComponent(match[1]) : "http://localhost:5000/swagger/v1/swagger.json", //http://localhost:8080/specs/v2/petstore.json",
-        dom_id: "swagger-ui-container",
-        supportedSubmitMethods: ["get", "post", "put", "delete", "patch", "head"],
-        onComplete: function() {
-            PostBootChanges();          
-        },
-        onFailure: function() {
-            console.log("Unable to Load SwaggerUI");
-        },
-        docExpansion: "none",
-        validatorUrl: false,
-        jsonEditor: false,
-        apisSorter: "alpha",
-        operationsSorter: function (a, b) {
-            //Sort by HTTP Method type and also then path alphabetically
-            var httpMethodAndPathA = a.method + a.path;
-            var httpMethodAndPathB = b.method + b.path;
-            return httpMethodAndPathA.localeCompare(httpMethodAndPathB);
-        },
-        defaultModelRendering: "schema",
-        showRequestHeaders: true
-    });
-
-    window.swaggerUi.load();
-});
-
-
-function PostBootChanges()
-{
-    /// <summary>
-    /// Stuff to do after swagger ui is loaded
-    /// </summary>
-
-    //initialize auth
-    if (typeof initOAuth === "function") {
-        initOAuth();
-    }
-
-    //Show the 'help' tabs at the top info section
-    $("#api_info").append(window.Handlebars.templates["panel-info"]);
-
-
-    //kick off highlight js
-    $("pre code").each(function (i, e) {
-        window.hljs.highlightBlock(e);
-    });
-
-    //Remove extra columns from Response Area of error status codes
-    $(".fullwidth tr").each(function () {
-        var responseModelCol = 2;
-        var headersCol = 3;
-        var headerNode = $(this.cells[3]);
-
-        if ($(headerNode).html() === "Headers") {
-            $($(headerNode).parent().parent().parent().find("tr")).each(function () {
-                this.removeChild(this.cells[headersCol]);
-                this.removeChild(this.cells[responseModelCol]);
-            });
-        }
-    });
-
-    //Don't scroll anywhere when a panel is opened.
-    $(".panel").click(function (e) {
-        e.preventDefault();
-    });
-
-    //add bootstrap container class to match width of rest of the page
-    $("#api_info").addClass("container");
-
-    //Get rid of swagger ui response type selection
-    $(".response-content-type").remove();
-}
 this["Handlebars"]["templates"]["content_type"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var stack1, buffer = "";
   stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.produces : depth0), {"name":"each","hash":{},"fn":this.program(2, data),"inverse":this.noop,"data":data});
@@ -26761,30 +26759,6 @@ this["Handlebars"]["templates"]["resource"] = Handlebars.template({"1":function(
     + escapeExpression(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"id","hash":{},"data":data}) : helper)))
     + "_endpoint_list' style='display:none'>\n\n</ul>\n";
 },"useData":true});
-this["Handlebars"]["templates"]["response_content_type"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
-  var stack1, buffer = "";
-  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.produces : depth0), {"name":"each","hash":{},"fn":this.program(2, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer;
-},"2":function(depth0,helpers,partials,data) {
-  var lambda=this.lambda, escapeExpression=this.escapeExpression;
-  return "  <option value=\""
-    + escapeExpression(lambda(depth0, depth0))
-    + "\">"
-    + escapeExpression(lambda(depth0, depth0))
-    + "</option>\n";
-},"4":function(depth0,helpers,partials,data) {
-  return "  <option value=\"application/json\">application/json</option>\n";
-  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<label data-sw-translate for=\""
-    + escapeExpression(((helper = (helper = helpers.responseContentTypeId || (depth0 != null ? depth0.responseContentTypeId : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"responseContentTypeId","hash":{},"data":data}) : helper)))
-    + "\">Response Content Type</label>\n<select name=\"responseContentType\" id=\""
-    + escapeExpression(((helper = (helper = helpers.responseContentTypeId || (depth0 != null ? depth0.responseContentTypeId : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"responseContentTypeId","hash":{},"data":data}) : helper)))
-    + "\">\n";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.produces : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.program(4, data),"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "</select>\n";
-},"useData":true});
 'use strict';
 
 /* jshint -W122 */
@@ -27731,6 +27705,30 @@ SwaggerUi.partials.signature = (function () {
 
 })();
 
+this["Handlebars"]["templates"]["response_content_type"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
+  var stack1, buffer = "";
+  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.produces : depth0), {"name":"each","hash":{},"fn":this.program(2, data),"inverse":this.noop,"data":data});
+  if (stack1 != null) { buffer += stack1; }
+  return buffer;
+},"2":function(depth0,helpers,partials,data) {
+  var lambda=this.lambda, escapeExpression=this.escapeExpression;
+  return "  <option value=\""
+    + escapeExpression(lambda(depth0, depth0))
+    + "\">"
+    + escapeExpression(lambda(depth0, depth0))
+    + "</option>\n";
+},"4":function(depth0,helpers,partials,data) {
+  return "  <option value=\"application/json\">application/json</option>\n";
+  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<label data-sw-translate for=\""
+    + escapeExpression(((helper = (helper = helpers.responseContentTypeId || (depth0 != null ? depth0.responseContentTypeId : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"responseContentTypeId","hash":{},"data":data}) : helper)))
+    + "\">Response Content Type</label>\n<select name=\"responseContentType\" id=\""
+    + escapeExpression(((helper = (helper = helpers.responseContentTypeId || (depth0 != null ? depth0.responseContentTypeId : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"responseContentTypeId","hash":{},"data":data}) : helper)))
+    + "\">\n";
+  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.produces : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.program(4, data),"data":data});
+  if (stack1 != null) { buffer += stack1; }
+  return buffer + "</select>\n";
+},"useData":true});
 this["Handlebars"]["templates"]["signature"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, buffer = "\n<div>\n<ul class=\"signature-nav\">\n  <li><a class=\"description-link\" href=\"#\" data-sw-translate>Model</a></li>\n  <li><a class=\"snippet-link\" href=\"#\" data-sw-translate>Example Value</a></li>\n</ul>\n<div>\n\n<div class=\"signature-container\">\n  <div class=\"description\">\n    ";
   stack1 = ((helper = (helper = helpers.signature || (depth0 != null ? depth0.signature : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"signature","hash":{},"data":data}) : helper));

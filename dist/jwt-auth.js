@@ -42,6 +42,7 @@ function handleLogin() {
     .done(function (data) {
         authUserName = $("#username").val();
         onOAuthComplete(data);
+        $("#message-bar").html("");
         UpdateLoginUi();
     })
     .fail(function (jqXHR, textStatus, errorThrown) {

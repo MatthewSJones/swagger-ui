@@ -17,12 +17,106 @@ html, body {
     border-top:4px solid #0D47A1;
 }
 
+/*
+Date: 24 Fev 2015
+Author: Pedro Oliveira <kanytu@gmail . com>
+*/
+
+ 
+.swagger-section pre code {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #818e96;
+  font-size: 14px;
+  font-family: "Source Code Pro" !important ;
+  background: #282b2e;
+    line-height: 20px;
+}
+
+.swagger-section pre code .keyword,
+.swagger-section pre code .selector-tag,
+.swagger-section pre code .literal,
+.swagger-section pre code .selector-id {
+  color: #93c763;
+}
+
+.swagger-section pre code .number {
+  color: #ffcd22;
+}
+
+.hljs {
+  color: #e0e2e4;
+}
+
+.swagger-section pre code .attribute {
+  color: #668bb0;
+}
+
+.swagger-section pre code .code,
+.swagger-section pre code .class .swagger-section pre code .title,
+.swagger-section pre code .section {
+  color: white;
+}
+
+.swagger-section pre code .regexp,
+.swagger-section pre code .link {
+  color: #d39745;
+}
+
+.swagger-section pre code .meta {
+  color: #557182;
+}
+
+.swagger-section pre code .tag,
+.swagger-section pre code .name,
+.swagger-section pre code .bullet,
+.swagger-section pre code .subst,
+.swagger-section pre code .emphasis,
+.swagger-section pre code .type,
+.swagger-section pre code .built_in,
+.swagger-section pre code .selector-attr,
+.swagger-section pre code .selector-pseudo,
+.swagger-section pre code .addition,
+.swagger-section pre code .variable,
+.swagger-section pre code .template-tag,
+.swagger-section pre code .template-variable {
+  color: #8cbbad;
+}
+
+.swagger-section pre code .string,
+.swagger-section pre code .symbol {
+  color: #ec7600;
+}
+
+.swagger-section pre code .comment,
+.swagger-section pre code .quote,
+.swagger-section pre code .deletion {
+  color: #818e96;
+}
+
+.swagger-section pre code .selector-class {
+  color: #A082BD
+}
+
+.swagger-section pre code .keyword,
+.swagger-section pre code .selector-tag,
+.swagger-section pre code .literal,
+.swagger-section pre code .doctag,
+.swagger-section pre code .title,
+.swagger-section pre code .section,
+.swagger-section pre code .type,
+.swagger-section pre code .name,
+.swagger-section pre code .strong {
+  font-weight: bold;
+}
+/*
 .swagger-section pre code {
     display: block;
-    background: #222;
-    color: #eaeaea;
+    background: #222f35;
+    color: #00fdff;
     font-size: 1.1em;
-    font-family: Menlo, Monaco, Consolas, monospace;
+    font-family:  Lato, Monaco, Consolas, monospace;
     line-height: 1.5;
     border: 1px solid #ccc;
     padding: 10px;
@@ -143,7 +237,7 @@ html, body {
 .swagger-section pre .xml .cdata {
     opacity: 0.5;
 }
-
+*/
 .swagger-section .swagger-ui-wrap {
     line-height: 1;
     max-width: 5000px;

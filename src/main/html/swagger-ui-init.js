@@ -50,7 +50,7 @@ $(function () {
 
     var match = window.location.search.match(/url=([^&]+)/);
     window.swaggerUi =  new SwaggerUi({
-        url: "http://localhost:5000/swagger/v1/swagger.json",
+        url: "http://10.9.34.51:5000/swagger/v1/swagger.json",
         dom_id: "swagger-ui-container",
         supportedSubmitMethods: ["get", "post", "put", "delete", "patch", "head"],
         onComplete: function() {

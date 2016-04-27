@@ -484,7 +484,7 @@ SwaggerUi.partials.signature = (function () {
     } else if (_.isUndefined(schema.items) && _.isArray(schema.enum)) {
       output = schema.enum[0];
     }
-
+    console.log(type);
     if (_.isUndefined(output)) {
       if (schema.$ref) {
         model = models[simpleRef(schema.$ref)];
@@ -504,7 +504,7 @@ SwaggerUi.partials.signature = (function () {
         }
       } else if (!_.isUndefined(schema.default)) {
         output = schema.default;
-      } else if (type === 'string') {
+      } else if (type === 'string' || JSON.stringify(type) === JSON.stringify(["string", "null"])) {
         if (format === 'date-time') {
           output = new Date().toISOString();
         } else if (format === 'date') {

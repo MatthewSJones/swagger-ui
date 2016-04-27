@@ -1,9 +1,14 @@
-/* Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org> */
-
-
 html, body {
 	height: 100%;
 }
+
+body {
+    color: #222;
+    font-size: 14px;
+    line-height: 1.4;
+    font-family: "RobotoDraft", sans-serif;
+}
+
 .wrapper {
 	min-height: 100%;
 	margin: 0 auto -80px; /* the bottom margin is the negative value of the footer's height */
@@ -17,21 +22,14 @@ html, body {
     border-top:4px solid #0D47A1;
 }
 
-/*
-Date: 24 Fev 2015
-Author: Pedro Oliveira <kanytu@gmail . com>
-*/
-
- 
 .swagger-section pre code {
   display: block;
   overflow-x: auto;
   padding: 0.5em;
   color: #818e96;
-  font-size: 14px;
-  font-family: "Source Code Pro" !important ;
+
   background: #282b2e;
-    line-height: 20px;
+    line-height: 18px;
 }
 
 .swagger-section pre code .keyword,
@@ -110,138 +108,11 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 .swagger-section pre code .strong {
   font-weight: bold;
 }
-/*
-.swagger-section pre code {
-    display: block;
-    background: #222f35;
-    color: #00fdff;
-    font-size: 1.1em;
-    font-family:  Lato, Monaco, Consolas, monospace;
-    line-height: 1.5;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
 
-.swagger-section pre .string,
-.swagger-section pre .title,
-.swagger-section pre .constant,
-.swagger-section pre .parent,
-.swagger-section pre .tag .value,
-.swagger-section pre .rules .value,
-.swagger-section pre .rules .value .number,
-.swagger-section pre .preprocessor,
-.swagger-section pre .ruby .symbol,
-.swagger-section pre .ruby .symbol .string,
-.swagger-section pre .aggregate,
-.swagger-section pre .template_tag,
-.swagger-section pre .django .variable,
-.swagger-section pre .smalltalk .class,
-.swagger-section pre .addition,
-.swagger-section pre .flow,
-.swagger-section pre .stream,
-.swagger-section pre .bash .variable,
-.swagger-section pre .apache .tag,
-.swagger-section pre .apache .cbracket,
-.swagger-section pre .tex .command,
-.swagger-section pre .tex .special,
-.swagger-section pre .erlang_repl .function_or_atom,
-.swagger-section pre .markdown .header {
-    color: #e78c45;
-}
-
-.swagger-section pre .comment,
-.swagger-section pre .annotation,
-.swagger-section pre .template_comment,
-.swagger-section pre .diff .header,
-.swagger-section pre .chunk,
-.swagger-section pre .markdown .blockquote {
-    color: #888;
-}
-
-.swagger-section pre .number,
-.swagger-section pre .date,
-.swagger-section pre .regexp,
-.swagger-section pre .literal,
-.swagger-section pre .smalltalk .symbol,
-.swagger-section pre .smalltalk .char,
-.swagger-section pre .go .constant,
-.swagger-section pre .change,
-.swagger-section pre .markdown .bullet,
-.swagger-section pre .markdown .link_url {
-    color: #080;
-}
-
-.swagger-section pre .label,
-.swagger-section pre .javadoc,
-.swagger-section pre .ruby .string,
-.swagger-section pre .decorator,
-.swagger-section pre .filter .argument,
-.swagger-section pre .localvars,
-.swagger-section pre .array,
-.swagger-section pre .attr_selector,
-.swagger-section pre .important,
-.swagger-section pre .pseudo,
-.swagger-section pre .pi,
-.swagger-section pre .doctype,
-.swagger-section pre .deletion,
-.swagger-section pre .envvar,
-.swagger-section pre .shebang,
-.swagger-section pre .apache .sqbracket,
-.swagger-section pre .nginx .built_in,
-.swagger-section pre .tex .formula,
-.swagger-section pre .erlang_repl .reserved,
-.swagger-section pre .prompt,
-.swagger-section pre .markdown .link_label,
-.swagger-section pre .vhdl .attribute,
-.swagger-section pre .clojure .attribute,
-.swagger-section pre .coffeescript .property {
-    color: #7aa6da;
-}
-
-.swagger-section pre .keyword,
-.swagger-section pre .id,
-.swagger-section pre .phpdoc,
-.swagger-section pre .title,
-.swagger-section pre .built_in,
-.swagger-section pre .aggregate,
-.swagger-section pre .css .tag,
-.swagger-section pre .javadoctag,
-.swagger-section pre .phpdoc,
-.swagger-section pre .yardoctag,
-.swagger-section pre .smalltalk .class,
-.swagger-section pre .winutils,
-.swagger-section pre .bash .variable,
-.swagger-section pre .apache .tag,
-.swagger-section pre .go .typename,
-.swagger-section pre .tex .command,
-.swagger-section pre .markdown .strong,
-.swagger-section pre .request,
-.swagger-section pre .status {
-    font-weight: bold;
-}
-
-.swagger-section pre .markdown .emphasis {
-    font-style: italic;
-}
-
-.swagger-section pre .nginx .built_in {
-    font-weight: normal;
-}
-
-.swagger-section pre .coffeescript .javascript,
-.swagger-section pre .javascript .xml,
-.swagger-section pre .tex .formula,
-.swagger-section pre .xml .javascript,
-.swagger-section pre .xml .vbscript,
-.swagger-section pre .xml .css,
-.swagger-section pre .xml .cdata {
-    opacity: 0.5;
-}
-*/
 .swagger-section .swagger-ui-wrap {
     line-height: 1;
     max-width: 5000px;
-    font-family: "Lato", sans-serif;
+    font-family: "RobotoDraft", sans-serif;
     margin-left: auto;
     margin-right: auto;
     /* JSONEditor specific styling */
@@ -249,7 +120,7 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 
 .swagger-section .swagger-ui-wrap b,
 .swagger-section .swagger-ui-wrap strong {
-    font-family: "Lato", sans-serif;
+    font-family: "RobotoDraft", sans-serif;
     font-weight: bold;
 }
 
@@ -379,7 +250,6 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 .swagger-section .swagger-ui-wrap figure,
 .swagger-section .swagger-ui-wrap footer,
 .swagger-section .swagger-ui-wrap header,
-.swagger-section .swagger-ui-wrap hgroup,
 .swagger-section .swagger-ui-wrap menu,
 .swagger-section .swagger-ui-wrap nav,
 .swagger-section .swagger-ui-wrap section,
@@ -399,7 +269,7 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 .swagger-section .swagger-ui-wrap .content pre {
     font-size: 12px;
     margin-top: 5px;
-    padding: 5px;
+    padding: 0 6px 0 0;
 }
 
 .swagger-section .swagger-ui-wrap .icon-btn {
@@ -485,7 +355,7 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 }
 
 .swagger-section .swagger-ui-wrap .model-signature {
-    font-family: "Lato", sans-serif;
+    font-family: "RobotoDraft", sans-serif;
     font-size: 1em;
     line-height: 1.5em;
 }
@@ -510,10 +380,10 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 }
 
 .swagger-section .swagger-ui-wrap .model-signature pre {
-    font-size: .85em;
+
     line-height: 1.2em;
     overflow: auto;
-    max-height: 400px;
+    max-height: 460px;
     cursor: pointer;
 }
 
@@ -624,7 +494,6 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 
 .swagger-section .swagger-ui-wrap .markdown p code,
 .swagger-section .swagger-ui-wrap .markdown li code {
-    font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
     background-color: #f0f0f0;
     color: black;
     padding: 1px 3px;
@@ -635,7 +504,6 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 }
 
 .swagger-section .swagger-ui-wrap .editor_holder {
-    font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
     font-size: 0.9em;
 }
 
@@ -649,9 +517,6 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 }
 
 .swagger-section .swagger-ui-wrap input.parameter {
-   /* width: 300px;
-    border: 1px solid #aaa;*/
-
     display: block;
     height: 30px !important;
     width: 100%;
@@ -672,11 +537,11 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 }
 
 .swagger-section .swagger-ui-wrap h1 {
-    color: black;
+    color: #222222;
     font-size: 1.5em;
     line-height: 1.3em;
     padding: 10px 0 10px 0;
-    font-family: "Lato", sans-serif;
+    font-family: "RobotoDraft", sans-serif;
     font-weight: bold;
 }
 
@@ -699,14 +564,16 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 }
 
 .swagger-section .swagger-ui-wrap h2 {
-    color: black;
+    color: #222222;
+    color: rgba(34, 34, 34, 0.8);
     font-size: 1.3em;
     padding-top: 5px;
+
     padding-bottom: 5px;
 }
 
 .swagger-section .swagger-ui-wrap h2 a {
-    color: black;
+    color: #222222;
 }
 
 .swagger-section .swagger-ui-wrap h2 span.sub {
@@ -740,7 +607,7 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 }
 
 .swagger-section .swagger-ui-wrap form.formtastic fieldset.inputs ol li.text textarea {
-    font-family: "Lato", sans-serif;
+    font-family: "RobotoDraft", sans-serif;
     height: 250px;
     padding: 4px;
     display: block;
@@ -834,7 +701,7 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 }
 
 .swagger-section .swagger-ui-wrap ul#resources {
-    font-family: "Lato", sans-serif;
+    font-family: "RobotoDraft", sans-serif;
     font-size: 0.9em;
 }
 
@@ -917,21 +784,23 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 
 .swagger-section .swagger-ui-wrap ul#resources li.resource div.heading h2 {
     color: #999999;
+    color: rgba(34, 34,34, 0.7);
     padding-left: 0;
     display: block;
     clear: none;
     float: left;
-    font-family: "Lato", sans-serif;
+    font-family: "RobotoDraft", sans-serif;
     font-weight: bold;
 }
 
 .swagger-section .swagger-ui-wrap ul#resources li.resource div.heading h2 a {
     color: #000; /* Fallback for older browsers */
-    color: rgba(0, 0, 0, 0.84);
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .swagger-section .swagger-ui-wrap ul#resources li.resource div.heading h2 a:hover {
-    color: black;
+    color: #000; /* Fallback for older browsers */
+    color: rgba(0, 0, 0, 0.8);
 }
 
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation {
@@ -939,7 +808,7 @@ Author: Pedro Oliveira <kanytu@gmail . com>
     clear: both;
     overflow: hidden;
     display: block;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     padding: 0;
 }
 
@@ -968,8 +837,8 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 }
 
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.path a {
-    color: #000; /* Fallback for older browsers */
-    color: rgba(0, 0, 0, 0.86);
+    color: #222; /* Fallback for older browsers */
+    color: rgba(34, 34, 34, 0.8);
     text-decoration: none;
 }
 
@@ -986,8 +855,8 @@ Author: Pedro Oliveira <kanytu@gmail . com>
     text-decoration: none;
     color: white;
     display: inline-block;
-    width: 50px;
-    font-size: 0.7em;
+    width: 75px;
+    font-size: 0.8em;
     text-align: center;
     padding: 7px 0 4px;
     -moz-border-radius: 2px;
@@ -1376,7 +1245,7 @@ Author: Pedro Oliveira <kanytu@gmail . com>
     padding: 10px 0;
     font-size: 0.8em;
     border-top: 1px solid #dddddd;
-    font-family: "Lato", sans-serif;
+    font-family: "RobotoDraft", sans-serif;
     color: #999999;
     font-style: italic;
 }
@@ -1394,7 +1263,7 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 
 .swagger-section .swagger-ui-wrap .markdown ol,
 .swagger-section .swagger-ui-wrap .markdown ul {
-    font-family: "Lato", sans-serif;
+    font-family: "RobotoDraft", sans-serif;
     margin: 5px 0 10px;
     padding: 0 0 0 18px;
     list-style-type: disc;

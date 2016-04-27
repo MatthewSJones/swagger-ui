@@ -742,7 +742,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
         var response_body = pre;
         $(".request_url", $(this.el)).html("<pre></pre>");
         $(".request_url pre", $(this.el)).text(url);
-        $(".response_code", $(this.el)).html("<pre>" + response.status + "</pre>");
+        $(".response_code", $(this.el)).html("<pre style='background:#70e26e; opacity:0.8'>" + response.status + "</pre>");
         $(".response_body", $(this.el)).html(response_body);
         $(".response_headers", $(this.el)).html("<pre class=\"json\">" + _.escape(JSON.stringify(response.headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>");
         $(".response", $(this.el)).slideDown();
